@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Center, Flex, Icon, IconButton, Text, VStack } from "native-base";
+import { Box, Center, DeleteIcon, Flex, Icon, IconButton, Text, VStack } from "native-base";
 
 import { DatabaseContext, DatabaseContextProps } from "../../../database/context";
 import { Client } from "../../../database/entities/client";
@@ -28,33 +28,7 @@ function ClientCard(client: Client) {
         </Text>
       </Flex>
       <Flex flexDirection={"row"} justify={"flex-end"}>
-        <IconButton
-          icon={<Icon as={Entypo} name="emoji-happy" />}
-          borderRadius="full"
-          _icon={{
-            color: "orange.500",
-            size: "md",
-          }}
-          _hover={{
-            bg: "orange.600:alpha.20",
-          }}
-          _pressed={{
-            bg: "orange.600:alpha.20",
-            _icon: {
-              name: "emoji-flirt",
-            },
-            _ios: {
-              _icon: {
-                size: "2xl",
-              },
-            },
-          }}
-          _ios={{
-            _icon: {
-              size: "2xl",
-            },
-          }}
-        />
+        <IconButton icon={<DeleteIcon />} colorScheme={"danger"} borderRadius="full" />
       </Flex>
     </VStack>
   );
