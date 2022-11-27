@@ -14,32 +14,29 @@ import {
 import { initializeDatabase } from "./database/config";
 
 export default function App() {
-  const [databaseLoaded, setDatabaseLoaded] = useState<boolean>(false);
   const [database, setDatabase] = useState<DatabaseContextProps | null>(null);
 
   useEffect(() => {
-    async function load() {
+    async function loadDatabase() {
       const db = await initializeDatabase();
 
-      setDatabase({ database: db });
-
-      setDatabaseLoaded(true);
+      if (db) setDatabase({ database: db });
     }
 
-    load();
+    loadDatabase();
   }, []);
 
   return (
     <NativeBaseProvider>
       <StatusBar barStyle="light-content" backgroundColor="black" />
 
-      {databaseLoaded && (
+      {database && (
         <DatabaseContext.Provider value={database}>
           <Routes />
         </DatabaseContext.Provider>
       )}
 
-      {!databaseLoaded && <Text>Carregando banco de dados</Text>}
+      {!database && <Text>Carregando banco de dados</Text>}
     </NativeBaseProvider>
   );
 }

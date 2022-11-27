@@ -1,8 +1,9 @@
 import React from "react";
+
 import { DataSource } from "typeorm/browser";
 
 export interface DatabaseContextProps {
-  database: DataSource | null;
+  database: DataSource;
 }
 
 const DatabaseContext = React.createContext({} as DatabaseContextProps | null);
