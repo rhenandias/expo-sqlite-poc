@@ -1,9 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { Box, Text } from "native-base";
-import {
-  DatabaseContext,
-  DatabaseContextProps,
-} from "../../context/databaseContext";
+import { DatabaseContext, DatabaseContextProps } from "../../../database/context";
 import { Client } from "../../../database/entities/client";
 
 export function Create() {
