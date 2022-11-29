@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm/browser";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from "typeorm/browser";
 
 @Entity({ name: "client", schema: "public" })
 export class Client {
@@ -22,4 +28,7 @@ export class Client {
 
   @Column("varchar")
   uf!: string;
+
+  @CreateDateColumn()
+  createdAt!: Date;
 }

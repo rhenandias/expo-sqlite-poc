@@ -56,6 +56,14 @@ export function TabBar({ state, navigation }: BottomTabBarProps) {
                       color={isFocused ? "#16A34A" : "#A7A1A1"}
                     />
                   )}
+
+                  {route.name === "config" && (
+                    <Feather
+                      name="settings"
+                      size={22}
+                      color={isFocused ? "#16A34A" : "#A7A1A1"}
+                    />
+                  )}
                 </Center>
               </Pressable>
             );

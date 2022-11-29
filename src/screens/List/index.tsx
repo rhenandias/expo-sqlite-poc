@@ -1,10 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Center, DeleteIcon, Flex, Icon, IconButton, Text, VStack } from "native-base";
+import { Center, Flex, Text, VStack, ScrollView } from "native-base";
 
-import { DatabaseContext, DatabaseContextProps } from "../../../database/context";
+import { RefreshControl } from "react-native";
+
+import {
+  DatabaseContext,
+  DatabaseContextProps,
+} from "../../../database/context";
 import { Client } from "../../../database/entities/client";
-
-import { Entypo } from "@expo/vector-icons";
 
 function ClientCard(client: Client) {
   return (
@@ -27,9 +30,6 @@ function ClientCard(client: Client) {
           {client.endereco} - {client.uf}
         </Text>
       </Flex>
-      <Flex flexDirection={"row"} justify={"flex-end"}>
-        <IconButton icon={<DeleteIcon />} colorScheme={"danger"} borderRadius="full" />
-      </Flex>
     </VStack>
   );
 }
@@ -39,22 +39,36 @@ export function List() {
 
   const [clients, setClients] = useState<Client[]>();
   const [loaded, setLoaded] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   useEffect(() => {
-    async function load() {
-      const clientRespository = database.getRepository(Client);
-
-      const clients = await clientRespository.find();
-
-      setClients(clients);
-      setLoaded(true);
-    }
-
     load();
   }, []);
 
+  async function load() {
+    const clientRespository = database.getRepository(Client);
+
+    const clients = await clientRespository.find();
+
+    setClients(clients);
+    setLoaded(true);
+  }
+
+  async function refresh() {
+    setRefreshing(true);
+    setLoaded(false);
+
+    await load();
+
+    setRefreshing(false);
+  }
+
   return (
-    <>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={refresh} />
+      }
+    >
       <Center my={6}>
         <Text fontWeight={"bold"} color={"gray.600"}>
           Listar Clientes
@@ -62,7 +76,7 @@ export function List() {
       </Center>
 
       <Center mt={4}>
-        <VStack w={"90%"}>
+        <VStack w={"90%"} space={4}>
           {loaded && (
             <>
               {clients?.map((client) => (
@@ -75,6 +89,8 @@ export function List() {
                   endereco={client.endereco}
                   municipio={client.municipio}
                   uf={client.uf}
+                  createdAt={client.createdAt}
+                  updatedAt={client.updatedAt}
                 />
               ))}
             </>
@@ -89,6 +105,6 @@ export function List() {
           </Center>
         </>
       )}
-    </>
+    </ScrollView>
   );
 }
