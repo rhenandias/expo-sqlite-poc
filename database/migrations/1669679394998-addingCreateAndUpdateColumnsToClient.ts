@@ -9,6 +9,7 @@ export class addingCreateAndUpdateColumnsToClient1669679394998
       new TableColumn({
         name: "createdAt",
         type: "datetime",
+        isNullable: true,
       })
     );
   }

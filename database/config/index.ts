@@ -7,20 +7,27 @@ import { creatingClientTable1669512896420 } from "../migrations/1669512896420-cr
 import { addingCreateAndUpdateColumnsToClient1669679394998 } from "../migrations/1669679394998-addingCreateAndUpdateColumnsToClient";
 
 const dataSource = new DataSource({
-  database: "bancoarrombado",
+  database: "aaa",
   driver: require("expo-sqlite"),
   entities: [Client],
   migrations: [
     creatingClientTable1669512896420,
     addingCreateAndUpdateColumnsToClient1669679394998,
   ],
-  migrationsRun: true,
-  synchronize: false,
+  // migrationsRun: true,
+  // synchronize: false,
   type: "expo",
 });
 
 async function initializeDatabase(): Promise<DataSource | null> {
-  return await dataSource.initialize();
+  const connection = await dataSource.initialize();
+
+  if (connection.isInitialized) {
+    connection.runMigrations();
+    connection.synchronize();
+  }
+
+  return connection;
 }
 
 export { initializeDatabase };
